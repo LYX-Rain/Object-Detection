@@ -35,7 +35,6 @@ from engine import train_one_epoch, evaluate
 import presets
 import utils
 
-
 def get_dataset(name, image_set, transform, data_path):
     paths = {
         "coco": (data_path, get_coco, 91),
@@ -46,10 +45,8 @@ def get_dataset(name, image_set, transform, data_path):
     ds = ds_fn(p, image_set=image_set, transforms=transform)
     return ds, num_classes
 
-
 def get_transform(train):
     return presets.DetectionPresetTrain() if train else presets.DetectionPresetEval()
-
 
 def main(args):
     utils.init_distributed_mode(args)
@@ -64,9 +61,8 @@ def main(args):
     # dataset_test, _ = get_dataset(args.dataset, "val", get_transform(train=False), args.data_path)
 
     num_classes = 2     # include background
-    dataset = get_my_coco(args.data_path, "JPEGImages", "annotations.json", get_transform(train=True))
+    dataset = get_my_coco(args.data_path, "annotations.json", get_transform(train=True))
     dataset_test = get_my_coco(args.data_path, "annotations.json", get_transform(train=False))
-
 
     print("Creating data loaders")
     if args.distributed:
@@ -148,7 +144,6 @@ def main(args):
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Training time {}'.format(total_time_str))
-
 
 if __name__ == "__main__":
     import argparse
